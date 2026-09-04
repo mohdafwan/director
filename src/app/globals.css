@@ -1,26 +1,403 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   Signal orange on graphite. Cyan is reserved for data. Machine-state colours
+   are reserved for machine state. See docs/03-DESIGN-AND-MOTION.md §6.2
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Foundation ─────────────────────────────────────────────────────────── */
+  --color-bg: #07090c;
+  --color-bg-elevated: #0b0e13;
+  --color-surface: #0f141a;
+  --color-surface-2: #151c24;
+  --color-surface-3: #1c242e;
+
+  /* ── Line ───────────────────────────────────────────────────────────────── */
+  --color-border: #1e2831;
+  --color-border-strong: #2c3945;
+  --color-grid: #131a22;
+
+  /* ── Ink ────────────────────────────────────────────────────────────────── */
+  --color-ink: #ecf1f6;
+  --color-ink-2: #a8b6c4;
+  --color-ink-3: #6d7c8b;
+  --color-ink-inverse: #07090c;
+
+  /* ── Brand: signal orange. Primary CTAs only. ───────────────────────────── */
+  --color-accent: #ff6a13;
+  --color-accent-hover: #ff8340;
+  --color-accent-press: #e85a08;
+
+  /* ── Data: instrument cyan. Live values + flow lines only. ──────────────── */
+  --color-data: #4fc3e8;
+
+  /* ── Machine state. Same language an HMI uses. ─────────────────────────── */
+  --color-run: #3fb950;
+  --color-idle: #d2a31c;
+  --color-fault: #f0533f;
+  --color-offline: #566472;
+
+  /* ── Type ───────────────────────────────────────────────────────────────── */
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+
+  /* ── Radius: machined, not pillowy ──────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+
+  /* ── Motion ─────────────────────────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Alpha derivatives — not expressible as @theme colors */
+  --accent-soft: rgba(255, 106, 19, 0.12);
+  --accent-line: rgba(255, 106, 19, 0.35);
+  --data-soft: rgba(79, 195, 232, 0.12);
+  --data-line: rgba(79, 195, 232, 0.4);
+
+  /* Durations */
+  --d-instant: 90ms;
+  --d-micro: 140ms;
+  --d-ui: 220ms;
+  --d-enter: 460ms;
+  --d-section: 720ms;
+  --d-cinema: 1200ms;
+
+  --header-h: 4rem;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchor targets so sticky header never covers a heading */
+    scroll-padding-top: calc(var(--header-h) + 2rem);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: clamp(0.97rem, 0.93rem + 0.18vw, 1.03rem);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-ink-inverse);
+  }
+
+  /* Focus is never removed. 2px accent ring at 2px offset. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Tabular numerals everywhere a value can change, so layout never jitters */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ═══════════════════════════════════════════════════════════════════════════
+   TYPE SCALE  (fluid; see docs §6.3)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  .t-display {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+  }
+  .t-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 1.45rem + 2.4vw, 3.25rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.06;
+  }
+  .t-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.35rem + 1.9vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .t-h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.875rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+  .t-h4 {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1.06rem + 0.3vw, 1.3125rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .t-lead {
+    font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.1875rem);
+    line-height: 1.65;
+    color: var(--color-ink-2);
+  }
+  .t-small {
+    font-size: clamp(0.875rem, 0.86rem + 0.06vw, 0.90625rem);
+    line-height: 1.6;
+  }
+  /* Mono label — the strongest "engineering" typographic signal on the site */
+  .t-label {
+    font-family: var(--font-mono);
+    font-size: clamp(0.6875rem, 0.66rem + 0.12vw, 0.75rem);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  /* ── Layout ───────────────────────────────────────────────────────────── */
+  .container-site {
+    width: 100%;
+    max-width: 80rem; /* 1280 */
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    .container-site {
+      padding-inline: 3rem;
+    }
+  }
+  .container-wide {
+    width: 100%;
+    max-width: 90rem; /* 1440 */
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    .container-wide {
+      padding-inline: 3rem;
+    }
+  }
+  .section-y {
+    padding-block: clamp(5rem, 3rem + 7vw, 10rem);
+  }
+  .section-y-sm {
+    padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+  }
+
+  /* ── Hairline separators ──────────────────────────────────────────────── */
+  .rule-t {
+    border-top: 1px solid var(--color-border);
+  }
+  .rule-b {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* ── Technical grid overlay ───────────────────────────────────────────── */
+  .tech-grid {
+    background-image:
+      linear-gradient(to right, var(--color-grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-grid) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .grid-fade {
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
+  }
+
+  /* ── Prose (insights, legal) ──────────────────────────────────────────── */
+  .prose-industrial {
+    max-width: 68ch;
+  }
+  .prose-industrial p {
+    color: var(--color-ink-2);
+    margin-block: 1.15em;
+  }
+  .prose-industrial h2 {
+    font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+    margin-top: 2.5em;
+    margin-bottom: 0.6em;
+  }
+  .prose-industrial h3 {
+    font-size: 1.25rem;
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+  }
+  .prose-industrial ul {
+    list-style: none;
+    padding: 0;
+    margin-block: 1.25em;
+  }
+  .prose-industrial li {
+    color: var(--color-ink-2);
+    padding-left: 1.5rem;
+    position: relative;
+    margin-block: 0.55em;
+  }
+  .prose-industrial li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 7px;
+    height: 1px;
+    background: var(--color-accent);
+  }
+  .prose-industrial a {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-line);
+    text-underline-offset: 3px;
+  }
+  .prose-industrial a:hover {
+    text-decoration-color: var(--color-accent);
+  }
+  .prose-industrial code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    padding: 0.1em 0.35em;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATION — hero + reveals. CSS only; no JS animation on the critical path.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  @keyframes riseIn {
+    from { opacity: 0; transform: translate3d(0, 1.25rem, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes maskUp {
+    from { opacity: 0; transform: translate3d(0, 1.5rem, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  @keyframes popIn {
+    0%   { opacity: 0; transform: scale(0.86); }
+    62%  { opacity: 1; transform: scale(1.06); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes drawPath {
+    to { stroke-dashoffset: 0; }
+  }
+  /* Travelling dash — a data pulse moving along a path. Linear on purpose:
+     eased motion reads as a physical object, linear reads as a signal. */
+  @keyframes dashFlow {
+    from { stroke-dashoffset: 400; }
+    to   { stroke-dashoffset: 0; }
+  }
+  @keyframes pulseTravel {
+    0%   { offset-distance: 0%;   opacity: 0; }
+    8%   { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+  @keyframes blinkDot {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.35; }
+  }
+  @keyframes gridDrift {
+    from { background-position: 0 0; }
+    to   { background-position: 64px 64px; }
+  }
+  @keyframes marquee {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+
+  /* Hero beats — timings mirror docs/03 §7.3 exactly */
+  .anim-eyebrow  { animation: riseIn var(--d-enter) var(--ease-out) 180ms both; }
+  .anim-line     { animation: maskUp var(--d-section) var(--ease-out) both; }
+  .anim-sub      { animation: riseIn var(--d-enter) var(--ease-out) 620ms both; }
+  .anim-cta      { animation: popIn 420ms var(--ease-out) 760ms both; }
+  .anim-cta-2    { animation: popIn 420ms var(--ease-out) 830ms both; }
+  .anim-trust    { animation: riseIn var(--d-enter) var(--ease-out) 980ms both; }
+  .anim-grid     { animation: fadeIn 260ms var(--ease-out) 120ms both; }
+  .anim-panel    { animation: riseIn var(--d-cinema) var(--ease-out) 400ms both; }
+  .anim-node     { animation: popIn 580ms var(--ease-out) both; }
+  .anim-blink    { animation: blinkDot 2.2s var(--ease-in-out) infinite; }
+
+  .draw-path {
+    stroke-dasharray: var(--len, 400);
+    stroke-dashoffset: var(--len, 400);
+    animation: drawPath var(--d-cinema) var(--ease-in-out) both;
+  }
+
+  .pulse-dot {
+    offset-rotate: 0deg;
+    animation: pulseTravel var(--pulse-dur, 2.6s) linear infinite;
+  }
+
+  .marquee-track {
+    animation: marquee var(--marquee-dur, 42s) linear infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   Everything resolves to its final state. Nothing disappears, nothing loops.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .draw-path { stroke-dashoffset: 0 !important; }
+  .pulse-dot { display: none !important; }
+  .marquee-track { transform: none !important; }
+  .anim-eyebrow, .anim-line, .anim-sub, .anim-cta, .anim-cta-2,
+  .anim-trust, .anim-grid, .anim-panel, .anim-node, .anim-blink {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

@@ -1,69 +1,71 @@
-import Image from "next/image";
+import dynamic from "next/dynamic";
+import type { Metadata } from "next";
 
-export default function Home() {
+import { site } from "@/config/site";
+import { buildMetadata } from "@/lib/seo";
+import { itemListSchema } from "@/lib/jsonld";
+import { services } from "@/content/services";
+import { JsonLd } from "@/components/seo/JsonLd";
+
+import { Hero } from "@/components/home/Hero";
+import { CapabilityBar } from "@/components/home/CapabilityBar";
+import { ProblemSection } from "@/components/home/ProblemSection";
+import { BrownfieldSection } from "@/components/home/BrownfieldSection";
+import { WhatWeBuild } from "@/components/home/WhatWeBuild";
+import { ProcessSection } from "@/components/home/ProcessSection";
+import { ProjectsSection } from "@/components/home/ProjectsSection";
+import { WhyUs } from "@/components/home/WhyUs";
+import { TechnologySection } from "@/components/home/TechnologySection";
+import { CommercialsSection } from "@/components/home/CommercialsSection";
+import { FaqSection } from "@/components/home/FaqSection";
+
+/* Interactive islands: below the fold, loaded on demand so they never appear
+   in the initial route bundle and cannot affect LCP. */
+const LiveDemo = dynamic(() => import("@/components/home/LiveDemo").then((m) => m.LiveDemo));
+const ArchitectureFlow = dynamic(() =>
+  import("@/components/home/ArchitectureFlow").then((m) => m.ArchitectureFlow),
+);
+const IndustriesExplorer = dynamic(() =>
+  import("@/components/home/IndustriesExplorer").then((m) => m.IndustriesExplorer),
+);
+
+export const metadata: Metadata = buildMetadata({
+  title: `${site.name} — Industrial IoT, Automation & Digital Transformation`,
+  description:
+    "We connect existing PLCs, sensors and machines to real-time monitoring, automation and software. IIoT, PLC, SCADA, HMI and industrial software — one engineering team.",
+  path: "/",
+});
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      <JsonLd
+        data={itemListSchema(
+          services.map((s) => ({
+            name: s.name,
+            path: `/${s.slug}`,
+            description: s.summary,
+          })),
+        )}
+      />
+
+      {/* Homepage section order and reasoning: docs/02-SITEMAP-AND-UX.md §5.1 */}
+      <Hero />                {/* 01 · who / what / who-for                     */}
+      <CapabilityBar />       {/* 02 · scannable capability row + early links   */}
+      <ProblemSection />      {/* 03 · recognition                              */}
+      <BrownfieldSection />   {/* 04 · objection killed early                   */}
+      <LiveDemo />            {/* 05 · show the cure working                    */}
+      <ArchitectureFlow />    {/* 06 · technical credibility                    */}
+      <WhatWeBuild />         {/* 07 · depth + navigation to money pages        */}
+      <IndustriesExplorer />  {/* 08 · sector relevance                         */}
+      <ProcessSection />      {/* 09 · how we engage, and the way out           */}
+      <ProjectsSection />     {/* 10 · honest proof                             */}
+      <WhyUs />               {/* 11 · differentiator, after the depth          */}
+      <TechnologySection />   {/* 12 · engineer's checklist                     */}
+      <CommercialsSection />  {/* 13 · cost and time                            */}
+      <FaqSection />          {/* 14 · residual doubt + FAQPage schema          */}
+      {/* 15 · final CTA lives in the footer, so the page does not stack two
+             identical calls to action back to back. */}
+    </>
   );
 }
