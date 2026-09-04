@@ -14,13 +14,14 @@ export function CapabilityBar() {
   return (
     <section className="rule-t rule-b bg-bg-elevated" aria-label="What we do">
       <div className="container-site">
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5">
+        {/* Dividers come from a 1px grid gap over a border-coloured background:
+            it draws exactly the lines between cells at every column count,
+            with no outer border, and does not depend on Tailwind variant
+            ordering the way nth-child border utilities do. */}
+        <ul className="grid grid-cols-1 gap-px bg-border md:grid-cols-2 lg:grid-cols-5">
           {capabilities.map((item, i) => (
-            <li
-              key={item.stage}
-              className="border-border md:[&:nth-child(odd)]:border-r lg:border-r lg:last:border-r-0 lg:[&:nth-child(odd)]:border-r [&:not(:last-child)]:border-b md:[&:nth-child(-n+3)]:border-b lg:[&]:border-b-0"
-            >
-              <Reveal delay={i * 60}>
+            <li key={item.stage} className="flex bg-bg-elevated">
+              <Reveal delay={i * 60} className="flex w-full">
                 <Link
                   href={item.href}
                   className="group flex h-full flex-col gap-3 px-6 py-8 transition-colors duration-200 hover:bg-surface lg:px-7 lg:py-10"

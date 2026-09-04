@@ -45,7 +45,7 @@ export function SiteFooter() {
       <div className="container-site py-16">
         <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4 lg:grid-cols-12">
           <div className="col-span-2 lg:col-span-4">
-            <Wordmark />
+            <Wordmark size={44} />
             <p className="mt-5 max-w-[38ch] text-[0.9375rem] leading-relaxed text-ink-2">
               {site.tagline}. We connect, automate and monitor industrial plants — engineered by
               one team from the sensor to the dashboard.

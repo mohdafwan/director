@@ -190,10 +190,22 @@
     text-transform: uppercase;
   }
 
-  /* ── Layout ───────────────────────────────────────────────────────────── */
+  /* ── Layout ─────────────────────────────────────────────────────────────
+     ONE container. Everything on the page — header, hero, every section, the
+     footer — sits on the same left and right edge.
+
+     There used to be a second, narrower container for body sections, which
+     sat 80px inside the header on each side and read as a misalignment. The
+     header width won: everything is now on the wider measure. Emphasis for
+     the "loud" sections is carried by full-bleed backgrounds and section
+     rules, which already run edge to edge.
+
+     Gutters step 24 → 48 → 64px, so content never touches the edge on a large
+     monitor. Prose is separately capped (60–68ch), so the width here affects
+     grids, tables and diagrams — not line length.                          */
   .container-site {
     width: 100%;
-    max-width: 80rem; /* 1280 */
+    max-width: 100rem; /* 1600 → 1472px content at ≥1536 */
     margin-inline: auto;
     padding-inline: 1.5rem;
   }
@@ -202,17 +214,12 @@
       padding-inline: 3rem;
     }
   }
-  .container-wide {
-    width: 100%;
-    max-width: 90rem; /* 1440 */
-    margin-inline: auto;
-    padding-inline: 1.5rem;
-  }
-  @media (min-width: 1024px) {
-    .container-wide {
-      padding-inline: 3rem;
+  @media (min-width: 1536px) {
+    .container-site {
+      padding-inline: 4rem;
     }
   }
+
   .section-y {
     padding-block: clamp(5rem, 3rem + 7vw, 10rem);
   }

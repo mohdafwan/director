@@ -39,7 +39,12 @@ export function Reveal({
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -12% 0px" },
+      // threshold 0 + a negative bottom margin rather than a fractional
+      // threshold: an element taller than ~6x the viewport can never reach
+      // 15% visibility, so a fractional threshold would leave it permanently
+      // hidden. This fires as soon as the element crosses 8% up from the
+      // viewport bottom, whatever its height.
+      { threshold: 0, rootMargin: "0px 0px -8% 0px" },
     );
 
     observer.observe(el);
@@ -49,7 +54,7 @@ export function Reveal({
   return (
     <Tag
       ref={ref}
-      className={cn("transition-[opacity,transform] duration-700 ease-out", className)}
+      className={cn("transition-[opacity,transform] duration-600 ease-out", className)}
       style={{
         opacity: shown ? 1 : 0,
         transform: shown ? "none" : `translate3d(0, ${y}px, 0)`,

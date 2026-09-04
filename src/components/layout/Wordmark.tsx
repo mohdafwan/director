@@ -1,40 +1,38 @@
+import Image from "next/image";
 import { site } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 /**
- * Placeholder wordmark.
+ * The FerruleTech logo — the supplied artwork, used as-is.
  *
- * The mark is a stylised signal path — three rising nodes joined by a line,
- * reading as "machine → edge → insight". It is deliberately simple and
- * monochrome-safe so it survives on a panel label, an invoice and a favicon.
+ * `public/brand/ferruletech-logo.png`, 704 × 155. Its ground is rgb(10,10,10),
+ * within a couple of levels of the site background (#07090C), so it sits flat
+ * on the page without needing the background knocked out.
  *
- * Replace with the final logo asset when brand design is complete; the layout
- * around it does not need to change.
+ * Sized by height, width auto, so the 4.54:1 aspect is never distorted. The
+ * artwork carries ~25px of its own padding top and bottom (the type occupies
+ * 66% of the image height), which is why the rendered heights below are larger
+ * than the optical size you want.
  */
-export function Wordmark({ className }: { className?: string }) {
+export function Wordmark({
+  className,
+  /** Rendered image height in px. Type reads at ~66% of this. */
+  size = 44,
+  priority = false,
+}: {
+  className?: string;
+  size?: number;
+  priority?: boolean;
+}) {
   return (
-    <span className={cn("flex items-center gap-2.5", className)}>
-      <svg
-        width="26"
-        height="26"
-        viewBox="0 0 26 26"
-        fill="none"
-        aria-hidden
-        className="shrink-0"
-      >
-        <path
-          d="M3 20 L9.5 20 L13 13 L16.5 6 L23 6"
-          stroke="var(--color-accent)"
-          strokeWidth="1.75"
-          strokeLinecap="square"
-        />
-        <rect x="1.5" y="18.5" width="3" height="3" fill="var(--color-accent)" />
-        <rect x="11.5" y="11.5" width="3" height="3" fill="var(--color-ink)" />
-        <rect x="21.5" y="4.5" width="3" height="3" fill="var(--color-data)" />
-      </svg>
-      <span className="font-display text-[1.0625rem] font-bold tracking-tight text-ink">
-        {site.wordmark}
-      </span>
-    </span>
+    <Image
+      src="/brand/ferruletech-logo.png"
+      width={704}
+      height={155}
+      alt={site.name}
+      priority={priority}
+      style={{ height: size, width: "auto" }}
+      className={cn("shrink-0", className)}
+    />
   );
 }

@@ -72,7 +72,7 @@ export function ArchitectureFlow() {
         <div className="sticky top-16 flex h-[calc(100vh-4rem)] flex-col justify-center overflow-hidden">
           <div className="tech-grid grid-fade pointer-events-none absolute inset-0 opacity-30" aria-hidden />
 
-          <div className="container-wide relative">
+          <div className="container-site relative">
             <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="t-label flex items-center gap-3 text-ink-2">

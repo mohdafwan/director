@@ -47,11 +47,11 @@ export const isPlaceholderOrigin = siteOrigin === PLACEHOLDER_ORIGIN;
 
 export const site = {
   // ── Identity ───────────────────────────────────────────────────────────────
-  name: "[COMPANY NAME]",
-  shortName: "[COMPANY]",
-  legalName: "[COMPANY LEGAL NAME PVT LTD]",
-  /** Used in <title> templates and the wordmark. */
-  wordmark: "[COMPANY NAME]",
+  name: "FerruleTech",
+  shortName: "FerruleTech",
+  legalName: "[FERRULETECH LEGAL ENTITY PVT LTD]",
+  /** Rendered in the nav lockup. Uppercased by the component. */
+  wordmark: "FerruleTech",
 
   tagline: "Industrial Digital Transformation",
   /** One-line description used in metadata + Organization schema. */
@@ -76,10 +76,10 @@ export const site = {
     phoneDisplay: "[+91 XXXXX XXXXX]",
     /** Digits only, country code included, for wa.me — e.g. 919876543210 */
     whatsappNumber: "[91XXXXXXXXXX]",
-    email: "[hello@domain.com]",
-    salesEmail: "[projects@domain.com]",
+    email: "[hello@ferruletech.com]",
+    salesEmail: "[projects@ferruletech.com]",
     /** Where lead notifications are delivered. Used by /api/lead. */
-    leadInbox: "[projects@domain.com]",
+    leadInbox: "[projects@ferruletech.com]",
   },
 
   // ── Address (LocalBusiness schema) ─────────────────────────────────────────
@@ -100,7 +100,7 @@ export const site = {
 
   // ── Social ─────────────────────────────────────────────────────────────────
   social: {
-    linkedin: "[https://linkedin.com/company/...]",
+    linkedin: "[https://linkedin.com/company/ferruletech]",
     youtube: "",
     x: "",
     github: "",
@@ -111,6 +111,19 @@ export const site = {
     ga4Id: "", // e.g. "G-XXXXXXXXXX"
     googleAdsId: "", // e.g. "AW-XXXXXXXXX"
     adsLeadConversionLabel: "", // e.g. "AbC-D_efG"
+  },
+
+  /**
+   * Logo gradient, measured from the supplied artwork. Kept here so the SVG
+   * mark, the favicon and the OG image cannot drift apart.
+   * See src/components/layout/FerruleMark.tsx
+   */
+  brand: {
+    violet: "#9046E2",
+    indigo: "#2A2086",
+    blue: "#0F6FD0",
+    rimLight: "#F0E0FF",
+    rimBlue: "#8FB8DA",
   },
 
   // ── Business facts (only fill in what is TRUE) ─────────────────────────────

@@ -40,15 +40,38 @@ export default async function Image() {
           }}
         />
 
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <div style={{ display: "flex", width: 14, height: 14, background: "#FF6A13" }} />
+        <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+          {/* The ferrule mark. Satori has no SVG path support, so the square
+              aperture is drawn as a bordered box with two rounded corners —
+              visually identical at this size. */}
           <div
             style={{
               display: "flex",
-              fontSize: 26,
+              width: 44,
+              height: 44,
+              background: `linear-gradient(135deg, ${site.brand.rimLight} 0%, ${site.brand.violet} 12%, #1B1140 52%, ${site.brand.indigo} 72%, ${site.brand.blue} 90%, ${site.brand.rimBlue} 100%)`,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                width: 30,
+                height: 30,
+                background: "#07090C",
+                borderRadius: "0 7px 0 7px",
+              }}
+            />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 28,
               fontWeight: 700,
               color: "#ECF1F6",
-              letterSpacing: "-0.02em",
+              letterSpacing: "0.005em",
+              textTransform: "uppercase",
             }}
           >
             {site.name}

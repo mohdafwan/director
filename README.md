@@ -1,4 +1,4 @@
-# [COMPANY NAME] — Industrial Digital Transformation
+# FerruleTech — Industrial Digital Transformation
 
 A production-ready Next.js website designed as a **B2B lead-generation system** for an
 industrial IoT / automation / PLC / SCADA / industrial software company in India.
@@ -28,7 +28,7 @@ npm run check:config     # lists every placeholder still outstanding
 ```
 
 `build:prod` runs this first and refuses to build while placeholders remain, because a live
-site with `[COMPANY NAME]` in its `<title>` and `[+91 XXXXX XXXXX]` in its schema.org markup
+site with `[+91 XXXXX XXXXX]` in its schema.org markup
 is worse than no site. Until `NEXT_PUBLIC_SITE_URL` is set, `robots.txt` disallows all
 crawling — so a staging deploy cannot be indexed by accident.
 
@@ -38,7 +38,8 @@ crawling — so a staging deploy cannot be indexed by accident.
 | --- | --- | --- |
 | ☐ | Company details, phone, WhatsApp, email, address | `src/config/site.ts` |
 | ☐ | `NEXT_PUBLIC_SITE_URL` | environment / hosting config |
-| ☐ | Real logo (replace the placeholder mark) | `src/components/layout/Wordmark.tsx` |
+| ☑ | Logo — vector mark, favicon and transparent raster assets built from the supplied artwork | `src/components/layout/FerruleMark.tsx`, `public/brand/` |
+| ☐ | **Supply the original logo vector** (.ai/.svg/.eps) — current assets are reconstructed from a 268px screenshot | `public/brand/README.md` |
 | ☐ | **Connect lead delivery** — email / CRM / WhatsApp API | `src/app/api/lead/route.ts` → `deliver()` |
 | ☐ | GA4 + Google Ads IDs, then add the gtag script | `src/config/site.ts`, `src/app/layout.tsx` |
 | ☐ | Founder biography (currently a marked placeholder block) | `src/app/about/page.tsx` |

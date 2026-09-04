@@ -246,7 +246,7 @@ export function LiveDemo() {
     <section id="demo" className="section-y rule-t relative overflow-hidden bg-bg-elevated">
       <div className="tech-grid grid-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden />
 
-      <div className="container-wide relative">
+      <div className="container-site relative">
         <div className="mb-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="t-label flex items-center gap-3 text-ink-2">

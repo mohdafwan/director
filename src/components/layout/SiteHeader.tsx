@@ -69,18 +69,23 @@ export function SiteHeader() {
         )}
         onMouseLeave={closeWithDelay}
       >
-        <div className="container-wide flex h-full items-center justify-between gap-6">
+        {/* Three-column grid rather than flex + justify-between: with a 32px
+            mark on the left and a phone number + CTA on the right, "space
+            between" centres the *gap*, not the nav, pushing the links left of
+            the page axis. Equal minmax(0,1fr) side columns put the middle
+            column on the true centre line at every width. */}
+        <div className="container-site grid h-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-6">
           <Link
             href="/"
-            className="shrink-0"
+            className="justify-self-start"
             aria-label={`${site.name} — home`}
             onFocus={() => setOpenMenu(null)}
           >
-            <Wordmark />
+            <Wordmark priority />
           </Link>
 
           {/* ── Desktop nav ─────────────────────────────────────────────── */}
-          <nav aria-label="Main" className="hidden lg:block">
+          <nav aria-label="Main" className="hidden justify-self-center lg:block">
             <ul className="flex items-center gap-1">
               {primaryNav.map((item) => {
                 const active = openMenu === item.menu && item.menu !== null;
@@ -124,29 +129,31 @@ export function SiteHeader() {
             </ul>
           </nav>
 
-          <div className="hidden shrink-0 items-center gap-2 lg:flex">
-            <a
-              href={telHref}
-              className="rounded-md px-3 py-2 font-mono text-[0.8125rem] text-ink-2 transition-colors hover:text-ink"
-              data-analytics="contact_call_click"
-            >
-              {site.contact.phoneDisplay}
-            </a>
-            <Button href="/contact" size="md" withArrow>
-              Talk to an engineer
-            </Button>
-          </div>
+          <div className="flex items-center justify-self-end gap-2">
+            <div className="hidden items-center gap-2 lg:flex">
+              <a
+                href={telHref}
+                className="rounded-md px-3 py-2 font-mono text-[0.8125rem] text-ink-2 transition-colors hover:text-ink"
+                data-analytics="contact_call_click"
+              >
+                {site.contact.phoneDisplay}
+              </a>
+              <Button href="/contact" size="md" withArrow>
+                Talk to an engineer
+              </Button>
+            </div>
 
-          {/* ── Mobile trigger ──────────────────────────────────────────── */}
-          <button
-            type="button"
-            className="flex size-11 items-center justify-center rounded-md text-ink lg:hidden"
-            aria-label="Open menu"
-            aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen(true)}
-          >
-            <Menu className="size-5" aria-hidden />
-          </button>
+            {/* ── Mobile trigger ────────────────────────────────────────── */}
+            <button
+              type="button"
+              className="flex size-11 items-center justify-center rounded-md text-ink lg:hidden"
+              aria-label="Open menu"
+              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen(true)}
+            >
+              <Menu className="size-5" aria-hidden />
+            </button>
+          </div>
         </div>
 
         {/* ── Mega panels ───────────────────────────────────────────────── */}
@@ -156,7 +163,7 @@ export function SiteHeader() {
             onMouseEnter={() => openWithDelay(openMenu)}
             onMouseLeave={closeWithDelay}
           >
-            <div className="container-wide py-10">
+            <div className="container-site py-10">
               {openMenu === "capabilities" && <CapabilitiesPanel />}
               {openMenu === "industries" && <IndustriesPanel />}
               {openMenu === "company" && <CompanyPanel />}

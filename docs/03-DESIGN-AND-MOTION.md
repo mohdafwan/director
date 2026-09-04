@@ -102,7 +102,10 @@ optical sizes.
 
 - **Base unit 4px.** Scale: 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 128 · 160.
 - **Section rhythm:** 96px mobile → 160px desktop vertical padding.
-- **Container:** max 1280px content, 1440px for full-bleed visual sections, 24px gutters (mobile) → 48px (desktop).
+- **Container:** one width, everywhere. `container-site` — 1440px outer, **1312px max content**.
+  - Gutters step 24px (mobile) → 48px (≥1024) → 64px (≥1536), so content never reaches the screen edge on a large monitor.
+  - Header, hero, every section and the footer share the same left and right edge. There was briefly a second, wider container for the "loud" sections; it put the header and the Live Demo 80px outside the content column on each side and read as a misalignment rather than as emphasis. Emphasis is carried by full-bleed backgrounds and section rules instead, which already run edge to edge.
+  - Widening this does **not** widen prose: body copy is separately capped at 60–68ch. It affects grids, tables and diagrams only.
 - **Grid:** 12 columns desktop, 8 tablet, 4 mobile.
 - **Radius:** `sm 4px` · `md 6px` · `lg 10px` · `xl 14px`. Deliberately tight — industrial equipment is machined, not pillowy. No `rounded-full` except on status dots and avatars.
 - **Technical grid overlay:** 1px lines at 64px pitch, `--grid` colour, `opacity 0.5`, masked with a radial fade so it never reaches the page edges.

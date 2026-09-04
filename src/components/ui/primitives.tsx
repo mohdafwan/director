@@ -202,14 +202,12 @@ export function Section({
   className,
   tone = "bg",
   bordered = true,
-  wide = false,
 }: {
   id?: string;
   children: ReactNode;
   className?: string;
   tone?: "bg" | "surface";
   bordered?: boolean;
-  wide?: boolean;
 }) {
   return (
     <section
@@ -221,7 +219,7 @@ export function Section({
         className,
       )}
     >
-      <div className={wide ? "container-wide" : "container-site"}>{children}</div>
+      <div className="container-site">{children}</div>
     </section>
   );
 }
