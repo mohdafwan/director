@@ -52,9 +52,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -70,7 +70,7 @@ jobs:
         # permissions set to "Read and write". Requiring a broader token just
         # to save one click is the wrong trade; enable Pages once by hand
         # instead (see the header).
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Install dependencies
         run: npm ci
@@ -120,7 +120,7 @@ jobs:
             echo "> **Warning** — LEAD_ENDPOINT is not set, so the contact and estimate forms will fail. Set it under Settings → Variables." >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./out
 
@@ -133,4 +133,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
