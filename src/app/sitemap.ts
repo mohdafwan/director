@@ -6,6 +6,14 @@ import { projects } from "@/content/projects";
 import { publishedInsights } from "@/content/insights";
 
 /**
+ * Generated at build time. `force-static` is required for `output: export`
+ * (a static host has no runtime to evaluate it) and is correct in the Node
+ * build too — nothing here depends on the incoming request.
+ */
+export const dynamic = "force-static";
+
+
+/**
  * Priority tiers follow docs/04-SEO.md §8.6:
  *   money pages 0.9 · hubs 0.8 · industries 0.7 · proof and posts 0.6
  *

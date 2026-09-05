@@ -1,0 +1,129 @@
+name: Deploy to GitHub Pages
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Builds the site as static HTML and publishes it to GitHub Pages.
+#
+# BEFORE THE FIRST RUN:
+#   Settings → Pages → Build and deployment → Source = "GitHub Actions"
+#
+# READ THIS FIRST — GitHub Pages serves static files and cannot run Node, so
+# three things that exist in a normal deployment do not exist here:
+#
+#   1. /api/lead            The route handler that validates, rate-limits and
+#                           honeypot-screens submissions. This job deletes it
+#                           before building, because `output: export` cannot
+#                           emit a POST handler. Set the repository variable
+#                           LEAD_ENDPOINT to a form service or serverless
+#                           function URL, or the contact and estimate forms
+#                           will fail silently for real visitors.
+#
+#   2. Image optimisation   Images are served exactly as authored.
+#
+#   3. Response headers     The security headers in next.config.ts are dropped;
+#                           GitHub Pages will not send them.
+#
+# If any of those matter — and for a lead-generation site the first one does —
+# deploy to a host with a Node runtime instead and keep this workflow for
+# preview builds. See README "Deploying".
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      allow_indexing:
+        description: "Allow search engines to index this deployment"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deploys at once; never cancel one midway.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Configure Pages
+        id: pages
+        # Emits base_path ("/<repo>", or "" for a user/org site or a custom
+        # domain) and base_url. Feeding these to the build is what makes the
+        # site work from a sub-directory.
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck and lint
+        # A broken build should fail here, not silently publish.
+        run: |
+          npm run typecheck
+          npm run lint
+
+      - name: Remove server-only routes
+        # `output: export` cannot emit a POST route handler. The forms post to
+        # site.leadEndpoint instead — set the LEAD_ENDPOINT repo variable.
+        run: rm -rf src/app/api
+
+      - name: Build static site
+        env:
+          NEXT_OUTPUT: export
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
+          # Where the contact and estimate forms POST. Set in
+          # Settings → Secrets and variables → Actions → Variables.
+          NEXT_PUBLIC_LEAD_ENDPOINT: ${{ vars.LEAD_ENDPOINT }}
+          # Default to noindex: a github.io copy competing with the real domain
+          # is duplicate content that is unpleasant to unpick later. Run the
+          # workflow manually with "Allow search engines to index" to publish
+          # an indexable build.
+          NEXT_PUBLIC_NOINDEX: ${{ inputs.allow_indexing && '0' || '1' }}
+        run: npm run build
+
+      - name: Disable Jekyll processing
+        # Pages would otherwise ignore Next's _next/ directory, since Jekyll
+        # skips paths beginning with an underscore.
+        run: touch out/.nojekyll
+
+      - name: Report what was built
+        run: |
+          echo "### Build summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Base URL: ${{ steps.pages.outputs.base_url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Base path: \`${{ steps.pages.outputs.base_path }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- HTML pages: $(find out -name '*.html' | wc -l)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Total files: $(find out -type f | wc -l)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Indexable: ${{ inputs.allow_indexing && 'yes' || 'no (robots.txt disallows all)' }}" >> "$GITHUB_STEP_SUMMARY"
+          if [ -z "${{ vars.LEAD_ENDPOINT }}" ]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "> **Warning** — LEAD_ENDPOINT is not set, so the contact and estimate forms will fail. Set it under Settings → Variables." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

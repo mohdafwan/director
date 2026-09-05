@@ -6,6 +6,7 @@ import { industries } from "@/content/industries";
 import { Button } from "@/components/ui/Button";
 import { ChoiceCard, Field, Honeypot, Select, TextArea, TextInput } from "./fields";
 import { track } from "@/lib/analytics";
+import { site } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -141,7 +142,7 @@ export function EstimateWizard() {
     }
     setStatus("sending");
     try {
-      const response = await fetch("/api/lead", {
+      const response = await fetch(site.leadEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ kind: "estimate", ...data }),

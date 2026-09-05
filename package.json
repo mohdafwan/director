@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "check:config": "node scripts/check-config.mjs",
     "check:all": "npm run typecheck && npm run lint && npm run check:config -- --warn",
-    "build:prod": "npm run check:config && next build"
+    "build:prod": "npm run check:config && next build",
+    "build:static": "node scripts/build-static.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.41.0",

@@ -5,6 +5,7 @@ import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Field, Honeypot, TextArea, TextInput } from "./fields";
 import { track } from "@/lib/analytics";
+import { site } from "@/config/site";
 
 /**
  * The short path. Five fields, nothing more.
@@ -53,7 +54,7 @@ export function ShortLeadForm({ context }: { context?: string }) {
 
     setStatus("sending");
     try {
-      const response = await fetch("/api/lead", {
+      const response = await fetch(site.leadEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

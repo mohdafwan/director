@@ -36,10 +36,30 @@ function resolveOrigin(): string {
   const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.trim();
   const candidate = fromEnv && fromEnv.length > 0 ? fromEnv : PLACEHOLDER_ORIGIN;
   try {
-    return new URL(candidate).origin;
+    const url = new URL(candidate);
+    // Keep any path prefix: a GitHub Pages project site lives at
+    // https://<user>.github.io/<repo>, and canonicals must include the repo.
+    return `${url.origin}${url.pathname}`.replace(/\/+$/, "");
   } catch {
     return PLACEHOLDER_ORIGIN;
   }
+}
+
+/**
+ * Path prefix for a sub-directory deployment (a GitHub Pages project site is
+ * served from /<repo>).
+ *
+ * next/link, next/font and the metadata routes get this applied by Next
+ * automatically. `next/image` does NOT apply it to `src` when the optimiser is
+ * off, which is exactly the static-export case — so public assets referenced
+ * by <Image> must prefix it themselves via `asset()`.
+ */
+export const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/+$/, "");
+const needsAssetPrefix = process.env.NEXT_OUTPUT === "export" && basePath !== "";
+
+/** Prefix a /public asset path for the current deployment. */
+export function asset(path: string): string {
+  return needsAssetPrefix ? `${basePath}${path}` : path;
 }
 
 export const siteOrigin = resolveOrigin();
@@ -105,6 +125,19 @@ export const site = {
     x: "",
     github: "",
   },
+
+  /**
+   * Where the contact and estimate forms POST.
+   *
+   * Defaults to the built-in route handler, which validates, rate-limits and
+   * screens the honeypot server-side. A static host cannot run that route, so
+   * set NEXT_PUBLIC_LEAD_ENDPOINT to a form service or a serverless function
+   * when deploying to one. See README "Deploying".
+   */
+  leadEndpoint: process.env.NEXT_PUBLIC_LEAD_ENDPOINT?.trim() || "/api/lead",
+
+  /** Set NEXT_PUBLIC_NOINDEX=1 on preview deploys to keep them out of search. */
+  noindex: process.env.NEXT_PUBLIC_NOINDEX === "1",
 
   // ── Analytics (leave empty to disable) ─────────────────────────────────────
   analytics: {

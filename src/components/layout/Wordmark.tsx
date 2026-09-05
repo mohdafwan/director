@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { site } from "@/config/site";
+import { asset, site } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -26,7 +26,7 @@ export function Wordmark({
 }) {
   return (
     <Image
-      src="/brand/ferruletech-logo.png"
+      src={asset("/brand/ferruletech-logo.png")}
       width={704}
       height={155}
       alt={site.name}

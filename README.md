@@ -54,6 +54,58 @@ make sure a delivery failure returns non-200 so the visitor is told to call inst
 
 ---
 
+## Deploying
+
+Two build modes.
+
+### Node host — recommended
+
+Vercel, Netlify, Cloudflare, or any server running `next start`.
+
+```bash
+npm run build:prod    # refuses to build while placeholders remain
+npm start
+```
+
+Keeps everything: the `/api/lead` route with its validation, rate limiting and
+honeypot screening; image optimisation; and the security headers in
+`next.config.ts`.
+
+### GitHub Pages — static export
+
+Workflow: `.github/workflows/deploy-pages.yml`. Push to `main` and it builds and
+publishes. First-time setup is one switch: **Settings → Pages → Source →
+GitHub Actions**.
+
+Locally:
+
+```bash
+npm run build:static -- --base-path /your-repo --site-url https://you.github.io/your-repo
+npx serve out
+```
+
+**What you lose, and it is not trivial for this site:**
+
+| | Consequence |
+| --- | --- |
+| `/api/lead` cannot exist | GitHub Pages runs no code. The workflow deletes the route before building. **Set the `LEAD_ENDPOINT` repo variable** to a form service (Formspree, Web3Forms) or a serverless function, or the contact and estimate forms fail for real visitors — and this site exists to generate leads. |
+| No image optimisation | Images are served as authored. |
+| No response headers | The security headers are dropped; Pages will not send them. |
+
+**Deployments are `noindex` by default.** A `github.io` copy competing with the
+real domain is duplicate content that is unpleasant to unpick later. To publish
+an indexable build, run the workflow manually and tick *Allow search engines to
+index*.
+
+**Sub-directory deployments.** A project site is served from `/<repo>`. The
+workflow passes that through as `NEXT_PUBLIC_BASE_PATH`, which Next applies to
+links, fonts and metadata routes automatically. It does **not** apply it to
+`next/image` `src` when the optimiser is off, so public assets go through
+`asset()` in `src/config/site.ts`. Use that helper for any new asset you
+reference from `/public`, or it will 404 on Pages while working fine locally.
+
+---
+
 ## Strategy documents
 
 The reasoning behind every structural decision is in `docs/`. Read these before making
