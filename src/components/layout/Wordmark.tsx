@@ -31,7 +31,11 @@ export function Wordmark({
       height={155}
       alt={site.name}
       priority={priority}
-      style={{ height: size, width: "auto" }}
+      // maxWidth:none overrides Tailwind preflight's img{max-width:100%}.
+      // Without it a narrow container caps the width while the inline height
+      // stays fixed, which silently distorts the wordmark instead of
+      // overflowing visibly. Better to be measurably too wide than wrong.
+      style={{ height: size, width: "auto", maxWidth: "none" }}
       className={cn("shrink-0", className)}
     />
   );

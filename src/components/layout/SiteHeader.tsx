@@ -69,15 +69,22 @@ export function SiteHeader() {
         )}
         onMouseLeave={closeWithDelay}
       >
-        {/* Three-column grid rather than flex + justify-between: with a 32px
-            mark on the left and a phone number + CTA on the right, "space
-            between" centres the *gap*, not the nav, pushing the links left of
-            the page axis. Equal minmax(0,1fr) side columns put the middle
-            column on the true centre line at every width. */}
-        <div className="container-site grid h-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-6">
+        {/* From lg up: a three-column grid rather than flex + justify-between.
+            With a mark on the left and a phone number + CTA on the right,
+            "space between" centres the *gap*, not the nav, pushing the links
+            left of the page axis. Equal minmax(0,1fr) side columns put the
+            middle column on the true centre line at every width.
+
+            Below lg the grid must NOT apply. The nav is `hidden` there, and a
+            display:none element is not a grid item at all — so the right-hand
+            cluster auto-placed into column 2 (hamburger stranded mid-header,
+            column 3 empty) and column 1 collapsed narrow enough that
+            preflight's img{max-width:100%} squashed the logo out of aspect.
+            Two items want flex, so use flex until the third one exists. */}
+        <div className="container-site flex h-full items-center justify-between gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6">
           <Link
             href="/"
-            className="justify-self-start"
+            className="shrink-0 justify-self-start"
             aria-label={`${site.name} — home`}
             onFocus={() => setOpenMenu(null)}
           >
