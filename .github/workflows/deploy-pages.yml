@@ -3,9 +3,9 @@ name: Deploy to GitHub Pages
 # ─────────────────────────────────────────────────────────────────────────────
 # Builds the site as static HTML and publishes it to GitHub Pages.
 #
-# The Configure Pages step turns Pages on automatically. If it fails with
-# "Resource not accessible by integration", set Settings → Pages → Source →
-# "GitHub Actions" by hand and re-run.
+# BEFORE THE FIRST RUN — one manual step, once per repository:
+#   Settings → Pages → Build and deployment → Source = "GitHub Actions"
+# Without it, the Configure Pages step fails and nothing is published.
 #
 # READ THIS FIRST — GitHub Pages serves static files and cannot run Node, so
 # three things that exist in a normal deployment do not exist here:
@@ -65,15 +65,12 @@ jobs:
         # domain) and base_url. Feeding these to the build is what makes the
         # site work from a sub-directory.
         #
-        # enablement: true turns Pages on via the API using GITHUB_TOKEN, so
-        # the repo does not have to be configured by hand first. It needs
-        # Settings -> Actions -> Workflow permissions set to "Read and write".
-        # If this step fails with "Resource not accessible by integration",
-        # enable Pages manually instead: Settings -> Pages -> Source ->
-        # GitHub Actions.
+        # No `enablement: true` here on purpose. It asks GITHUB_TOKEN to turn
+        # Pages on via the API, which needs Settings -> Actions -> Workflow
+        # permissions set to "Read and write". Requiring a broader token just
+        # to save one click is the wrong trade; enable Pages once by hand
+        # instead (see the header).
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Install dependencies
         run: npm ci
