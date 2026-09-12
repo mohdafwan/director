@@ -30,7 +30,7 @@ export function isPlaceholder(value: string): boolean {
  * before deploying. `npm run check:config` fails the build if it is still the
  * placeholder.
  */
-const PLACEHOLDER_ORIGIN = "https://company.example";
+const PLACEHOLDER_ORIGIN = "https://ferruletech.com/";
 
 function resolveOrigin(): string {
   const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.trim();
