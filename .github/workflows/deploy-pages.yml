@@ -94,11 +94,10 @@ jobs:
           # Where the contact and estimate forms POST. Set in
           # Settings → Secrets and variables → Actions → Variables.
           NEXT_PUBLIC_LEAD_ENDPOINT: ${{ vars.LEAD_ENDPOINT }}
-          # Default to noindex: a github.io copy competing with the real domain
-          # is duplicate content that is unpleasant to unpick later. Run the
-          # workflow manually with "Allow search engines to index" to publish
-          # an indexable build.
-          NEXT_PUBLIC_NOINDEX: ${{ inputs.allow_indexing && '0' || '1' }}
+          # Pushes to the production branch publish the configured domain and
+          # should be crawlable. Manual runs remain noindex unless explicitly
+          # started with "Allow search engines to index".
+          NEXT_PUBLIC_NOINDEX: ${{ github.event_name == 'push' && '0' || inputs.allow_indexing && '0' || '1' }}
         run: npm run build
 
       - name: Disable Jekyll processing
