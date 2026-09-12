@@ -69,7 +69,7 @@ export const site = {
   // ── Identity ───────────────────────────────────────────────────────────────
   name: "FerruleTech",
   shortName: "FerruleTech",
-  legalName: "[FERRULETECH LEGAL ENTITY PVT LTD]",
+  legalName: "FERRULETECH LEGAL ENTITY PVT LTD",
   /** Rendered in the nav lockup. Uppercased by the component. */
   wordmark: "FerruleTech",
 
@@ -78,9 +78,9 @@ export const site = {
   description:
     "We connect, automate and monitor industrial plants — IIoT, PLC, SCADA, HMI and custom software, engineered by one team from the sensor to the dashboard.",
 
-  founded: "[YYYY]",
-  founder: "[FOUNDER NAME]",
-  founderRole: "[FOUNDER ROLE]",
+  founded: "2020",
+  founder: "Mohammad Afwan Anjum",
+  founderRole: "Founder & CEO",
 
   // ── Web ────────────────────────────────────────────────────────────────────
   /** Production origin, no trailing slash. Set via NEXT_PUBLIC_SITE_URL. */
@@ -95,7 +95,7 @@ export const site = {
     /** Human-readable for display, e.g. +91 98765 43210 */
     phoneDisplay: "+91 76663 88816",
     /** Digits only, country code included, for wa.me — e.g. 919876543210 */
-    whatsappNumber: "[91XXXXXXXXXX]",
+    whatsappNumber: "917666388816",
     email: "hello@ferruletech.com",
     salesEmail: "projects@ferruletech.com",
     /** Where lead notifications are delivered. Used by /api/lead. */

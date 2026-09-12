@@ -379,6 +379,10 @@
     from { transform: translate3d(0, 0, 0); }
     to   { transform: translate3d(-50%, 0, 0); }
   }
+  @keyframes textShimmer {
+    from { background-position: 200% center; }
+    to   { background-position: -200% center; }
+  }
 
   /* Hero beats — timings mirror docs/03 §7.3 exactly */
   .anim-eyebrow  { animation: riseIn var(--d-enter) var(--ease-out) 180ms both; }
@@ -406,6 +410,22 @@
   .marquee-track {
     animation: marquee var(--marquee-dur, 42s) linear infinite;
   }
+
+  .text-shimmer {
+    background: linear-gradient(
+      110deg,
+      var(--color-ink-2) 35%,
+      var(--color-ink) 46%,
+      #a4774c 50%,
+      var(--color-ink) 54%,
+      var(--color-ink-2) 65%
+    );
+    background-size: 220% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: textShimmer 3.8s var(--ease-in-out) infinite;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -428,6 +448,11 @@
   .draw-path { stroke-dashoffset: 0 !important; }
   .pulse-dot { display: none !important; }
   .marquee-track { transform: none !important; }
+  .text-shimmer {
+    animation: none !important;
+    background: none;
+    color: var(--color-ink-2);
+  }
   .anim-eyebrow, .anim-line, .anim-sub, .anim-cta, .anim-cta-2,
   .anim-trust, .anim-grid, .anim-panel, .anim-node, .anim-blink {
     opacity: 1 !important;

@@ -140,7 +140,7 @@ export function SiteHeader() {
             <div className="hidden items-center gap-2 lg:flex">
               <a
                 href={telHref}
-                className="rounded-md px-3 py-2 font-mono text-[0.8125rem] text-ink-2 transition-colors hover:text-ink"
+                className="text-shimmer rounded-md px-3 py-2 font-mono text-[0.8125rem] transition-colors hover:text-ink"
                 data-analytics="contact_call_click"
               >
                 {site.contact.phoneDisplay}
