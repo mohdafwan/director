@@ -42,6 +42,9 @@ export const metadata: Metadata = {
   publisher: site.name,
   formatDetection: { telephone: true, address: false, email: false },
   alternates: { canonical: "/" },
+  icons: {
+    icon: [{ url: "/brand/ferruletech-icon-512.png", type: "image/png", sizes: "512x512" }],
+  },
   openGraph: {
     type: "website",
     siteName: site.name,
