@@ -5,9 +5,8 @@ import { cn } from "@/lib/utils";
 /**
  * The FerruleTech logo — the supplied artwork, used as-is.
  *
- * `public/brand/ferruletech-logo.png`, 704 × 155. Its ground is rgb(10,10,10),
- * within a couple of levels of the site background (#07090C), so it sits flat
- * on the page without needing the background knocked out.
+ * `public/brand/ferruletech-logo.png`, 704 × 155. The light artwork is converted
+ * to black for the wheat theme while preserving the transparent background.
  *
  * Sized by height, width auto, so the 4.54:1 aspect is never distorted. The
  * artwork carries ~25px of its own padding top and bottom (the type occupies
@@ -36,7 +35,7 @@ export function Wordmark({
       // stays fixed, which silently distorts the wordmark instead of
       // overflowing visibly. Better to be measurably too wide than wrong.
       style={{ height: size, width: "auto", maxWidth: "none" }}
-      className={cn("shrink-0", className)}
+      className={cn("shrink-0 brightness-0", className)}
     />
   );
 }

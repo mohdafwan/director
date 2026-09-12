@@ -1,43 +1,43 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DESIGN TOKENS
-   Signal orange on graphite. Cyan is reserved for data. Machine-state colours
+  DESIGN TOKENS
+  Signal orange on wheat. Cyan is reserved for data. Machine-state colours
    are reserved for machine state. See docs/03-DESIGN-AND-MOTION.md §6.2
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @theme {
   /* ── Foundation ─────────────────────────────────────────────────────────── */
-  --color-bg: #07090c;
-  --color-bg-elevated: #0b0e13;
-  --color-surface: #0f141a;
-  --color-surface-2: #151c24;
-  --color-surface-3: #1c242e;
+  --color-bg: #f3ead7;
+  --color-bg-elevated: #faf4e7;
+  --color-surface: #fffaf0;
+  --color-surface-2: #eee3cd;
+  --color-surface-3: #e4d5b8;
 
   /* ── Line ───────────────────────────────────────────────────────────────── */
-  --color-border: #1e2831;
-  --color-border-strong: #2c3945;
-  --color-grid: #131a22;
+  --color-border: #d4c4a5;
+  --color-border-strong: #ae9c7b;
+  --color-grid: #e5d9c1;
 
   /* ── Ink ────────────────────────────────────────────────────────────────── */
-  --color-ink: #ecf1f6;
-  --color-ink-2: #a8b6c4;
-  --color-ink-3: #6d7c8b;
-  --color-ink-inverse: #07090c;
+  --color-ink: #20282b;
+  --color-ink-2: #58605e;
+  --color-ink-3: #7e8279;
+  --color-ink-inverse: #fffaf0;
 
   /* ── Brand: signal orange. Primary CTAs only. ───────────────────────────── */
-  --color-accent: #ff6a13;
-  --color-accent-hover: #ff8340;
-  --color-accent-press: #e85a08;
+  --color-accent: #c95018;
+  --color-accent-hover: #e06426;
+  --color-accent-press: #a83f10;
 
   /* ── Data: instrument cyan. Live values + flow lines only. ──────────────── */
-  --color-data: #4fc3e8;
+  --color-data: #087f9b;
 
   /* ── Machine state. Same language an HMI uses. ─────────────────────────── */
-  --color-run: #3fb950;
-  --color-idle: #d2a31c;
-  --color-fault: #f0533f;
-  --color-offline: #566472;
+  --color-run: #237a3b;
+  --color-idle: #9a6a08;
+  --color-fault: #b33b2d;
+  --color-offline: #69736f;
 
   /* ── Type ───────────────────────────────────────────────────────────────── */
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
@@ -58,10 +58,10 @@
 
 :root {
   /* Alpha derivatives — not expressible as @theme colors */
-  --accent-soft: rgba(255, 106, 19, 0.12);
-  --accent-line: rgba(255, 106, 19, 0.35);
-  --data-soft: rgba(79, 195, 232, 0.12);
-  --data-line: rgba(79, 195, 232, 0.4);
+  --accent-soft: rgba(201, 80, 24, 0.12);
+  --accent-line: rgba(201, 80, 24, 0.35);
+  --data-soft: rgba(8, 127, 155, 0.12);
+  --data-line: rgba(8, 127, 155, 0.4);
 
   /* Durations */
   --d-instant: 90ms;
@@ -72,7 +72,7 @@
   --d-cinema: 1200ms;
 
   --header-h: 4rem;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -89,6 +89,32 @@
     /* Offset anchor targets so sticky header never covers a heading */
     scroll-padding-top: calc(var(--header-h) + 2rem);
     -webkit-text-size-adjust: 100%;
+    scrollbar-color: #5b4632 var(--color-bg);
+    scrollbar-width: thin;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #5b4632;
+    border: 3px solid var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #765d43;
   }
 
   body {

@@ -91,15 +91,15 @@ export function ArchitectureFlow() {
 
             {/* ── Rail ────────────────────────────────────────────────── */}
             <div className="relative mb-10">
-              <div className="absolute inset-x-0 top-[13px] h-px bg-border" aria-hidden />
+              <div className="absolute inset-x-0 top-[13px] h-px bg-ink-3" aria-hidden />
               <div
-                className="absolute left-0 top-[13px] h-px bg-accent transition-[width] duration-150 ease-out"
+                className="absolute left-0 top-[13px] h-px bg-ink transition-[width] duration-150 ease-out"
                 style={{ width: `${progress * 100}%` }}
                 aria-hidden
               />
               {/* The travelling data packet */}
               <div
-                className="absolute top-[9px] size-2.5 rounded-full bg-data shadow-[0_0_12px_var(--data-line)] transition-[left] duration-150 ease-out"
+                className="absolute top-[9px] size-2.5 rounded-full bg-ink shadow-[0_0_12px_rgba(32,40,43,0.28)] transition-[left] duration-150 ease-out"
                 style={{ left: `calc(${progress * 100}% - 5px)` }}
                 aria-hidden
               />

@@ -91,15 +91,15 @@ export const site = {
   // ── Contact ────────────────────────────────────────────────────────────────
   contact: {
     /** E.164 for tel: links, e.g. +919876543210 */
-    phoneE164: "[+91XXXXXXXXXX]",
+    phoneE164: "+917666388816",
     /** Human-readable for display, e.g. +91 98765 43210 */
-    phoneDisplay: "[+91 XXXXX XXXXX]",
+    phoneDisplay: "+91 76663 88816",
     /** Digits only, country code included, for wa.me — e.g. 919876543210 */
     whatsappNumber: "[91XXXXXXXXXX]",
-    email: "[hello@ferruletech.com]",
-    salesEmail: "[projects@ferruletech.com]",
+    email: "hello@ferruletech.com",
+    salesEmail: "projects@ferruletech.com",
     /** Where lead notifications are delivered. Used by /api/lead. */
-    leadInbox: "[projects@ferruletech.com]",
+    leadInbox: "projects@ferruletech.com",
   },
 
   // ── Address (LocalBusiness schema) ─────────────────────────────────────────

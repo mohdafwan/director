@@ -26,7 +26,7 @@ export default async function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#07090C",
+          background: "#F3EAD7",
           padding: "72px",
           position: "relative",
         }}
@@ -37,7 +37,7 @@ export default async function Image() {
             position: "absolute",
             inset: 0,
             backgroundImage:
-              "linear-gradient(to right, #131A22 1px, transparent 1px), linear-gradient(to bottom, #131A22 1px, transparent 1px)",
+              "linear-gradient(to right, #E5D9C1 1px, transparent 1px), linear-gradient(to bottom, #E5D9C1 1px, transparent 1px)",
             backgroundSize: "64px 64px",
             display: "flex",
           }}
@@ -62,7 +62,7 @@ export default async function Image() {
                 display: "flex",
                 width: 30,
                 height: 30,
-                background: "#07090C",
+                background: "#F3EAD7",
                 borderRadius: "0 7px 0 7px",
               }}
             />
@@ -121,7 +121,7 @@ export default async function Image() {
               >
                 {word}
               </div>
-              {i < 4 && <div style={{ display: "flex", width: 26, height: 1, background: "#2C3945" }} />}
+              {i < 4 && <div style={{ display: "flex", width: 26, height: 1, background: "#AE9C7B" }} />}
             </div>
           ))}
         </div>
