@@ -104,10 +104,10 @@ export const site = {
 
   // ── Address (LocalBusiness schema) ─────────────────────────────────────────
   address: {
-    street: "[STREET ADDRESS]",
-    locality: "[CITY]",
-    region: "[STATE]",
-    postalCode: "[PIN]",
+    street: "101, 1st Floor, 2nd Cross, Building No. 14, c/wing",
+    locality: "Mumbra, Thane, Shilphata Road",
+    region: "Maharashtra",
+    postalCode: "400612",
     country: "IN",
     countryName: "India",
     /** Optional — improves LocalBusiness schema. */
