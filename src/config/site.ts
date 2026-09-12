@@ -31,17 +31,18 @@ export function isPlaceholder(value: string): boolean {
  * placeholder.
  */
 const PLACEHOLDER_ORIGIN = "https://company.example";
+const DEFAULT_ORIGIN = "https://ferruletech.com";
 
 function resolveOrigin(): string {
   const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  const candidate = fromEnv && fromEnv.length > 0 ? fromEnv : PLACEHOLDER_ORIGIN;
+  const candidate = fromEnv && fromEnv.length > 0 ? fromEnv : DEFAULT_ORIGIN;
   try {
     const url = new URL(candidate);
     // Keep any path prefix: a GitHub Pages project site lives at
     // https://<user>.github.io/<repo>, and canonicals must include the repo.
     return `${url.origin}${url.pathname}`.replace(/\/+$/, "");
   } catch {
-    return PLACEHOLDER_ORIGIN;
+    return DEFAULT_ORIGIN;
   }
 }
 
