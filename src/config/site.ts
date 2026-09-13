@@ -143,7 +143,7 @@ export const site = {
   // ── Analytics (leave empty to disable) ─────────────────────────────────────
   analytics: {
     ga4Id: "", // e.g. "G-XXXXXXXXXX"
-    googleAdsId: "", // e.g. "AW-XXXXXXXXX"
+    googleAdsId: "AW-18447122209",
     adsLeadConversionLabel: "", // e.g. "AbC-D_efG"
   },
 
