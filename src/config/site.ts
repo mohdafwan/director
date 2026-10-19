@@ -92,11 +92,11 @@ export const site = {
   // ── Contact ────────────────────────────────────────────────────────────────
   contact: {
     /** E.164 for tel: links, e.g. +919876543210 */
-    phoneE164: "+917666388816",
+    phoneE164: "+917021845991",
     /** Human-readable for display, e.g. +91 98765 43210 */
-    phoneDisplay: "+91 76663 88816",
+    phoneDisplay: "+91 70218 45991",
     /** Digits only, country code included, for wa.me — e.g. 919876543210 */
-    whatsappNumber: "917666388816",
+    whatsappNumber: "917021845991",
     email: "hello@ferruletech.com",
     salesEmail: "projects@ferruletech.com",
     /** Where lead notifications are delivered. Used by /api/lead. */
