@@ -127,15 +127,8 @@ export const site = {
     github: "",
   },
 
-  /**
-   * Where the contact and estimate forms POST.
-   *
-   * Defaults to the built-in route handler, which validates, rate-limits and
-   * screens the honeypot server-side. A static host cannot run that route, so
-   * set NEXT_PUBLIC_LEAD_ENDPOINT to a form service or a serverless function
-   * when deploying to one. See README "Deploying".
-   */
-  leadEndpoint: process.env.NEXT_PUBLIC_LEAD_ENDPOINT?.trim() || "/api/lead",
+  /** Dqrlink lead intake endpoint used by the contact and estimate forms. */
+  leadEndpoint: "https://app.ferruletech.com/api/lead",
 
   /** Set NEXT_PUBLIC_NOINDEX=1 on preview deploys to keep them out of search. */
   noindex: process.env.NEXT_PUBLIC_NOINDEX === "1",
